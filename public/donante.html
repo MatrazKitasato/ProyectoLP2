@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ayni - Panel del negocio donante</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+    <script defer src="donante.js"></script>
+</head>
+<body>
+  <header class="encabezado">
+    <div class="encabezado__marca">
+      <h1>Ayni</h1>
+      <p class="encabezado__subtitulo">Panel del negocio donante</p>
+      <a class="encabezado__volver" href="index.html">Cambiar de rol</a>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <section class="tarjeta" aria-labelledby="titulo-negocio">
+      <h2 id="titulo-negocio">¿Cuál es tu negocio?</h2>
+      <div class="campo">
+        <label for="select-negocio">Negocio</label>
+        <select id="select-negocio"></select>
+      </div>
+    </section>
+
+    <section class="tarjeta" aria-labelledby="titulo-publicar">
+      <h2 id="titulo-publicar">Publicar excedente de hoy</h2>
+      <form id="form-publicacion" class="formulario">
+        <div class="campo">
+          <label for="hora-limite">Disponible hasta</label>
+          <input type="datetime-local" id="hora-limite" required />
+        </div>
+
+        <div class="fila-producto">
+          <div class="campo">
+            <label for="input-producto">Producto</label>
+            <input type="text" id="input-producto" placeholder="Ej: Pan francés" />
+          </div>
+
+          <div class="campo campo--corto">
+            <label for="input-cantidad">Cantidad</label>
+            <input type="number" id="input-cantidad" min="1" value="1" />
+          </div>
+
+          <div class="campo campo--corto">
+            <label for="select-unidad">Unidad</label>
+            <select id="select-unidad">
+              <option value="unidades">unidades</option>
+              <option value="kg">kg</option>
+              <option value="litros">litros</option>
+            </select>
+          </div>
+
+          <button type="button" id="btn-agregar" class="boton boton--secundario">Agregar</button>
+        </div>
+
+        <div class="carrito">
+          <h3>Productos de esta publicación</h3>
+          <ul id="lista-carrito" class="lista-carrito"></ul>
+        </div>
+
+        <button type="submit" class="boton boton--principal">Publicar excedente</button>
+      </form>
+
+      <p id="mensaje-error" class="mensaje-error" role="alert"></p>
+    </section>
+
+    <section class="tarjeta" aria-labelledby="titulo-historial">
+      <h2 id="titulo-historial">Mis publicaciones</h2>
+      <ul id="lista-publicaciones" class="lista-publicaciones"></ul>
+    </section>
+  </main>
+
+
+</body>
+</html>

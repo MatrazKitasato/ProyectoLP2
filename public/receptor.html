@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ayni - Panel del comedor receptor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="receptor.js"></script>
+</head>
+<body>
+  <header class="encabezado">
+    <div class="encabezado__marca">
+      <h1>Ayni</h1>
+      <p class="encabezado__subtitulo">Panel del comedor receptor</p>
+      <a class="encabezado__volver" href="index.html">Cambiar de rol</a>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <section class="tarjeta" aria-labelledby="titulo-comedor">
+      <h2 id="titulo-comedor">¿Cuál es tu comedor u olla común?</h2>
+      <div class="campo">
+        <label for="select-comedor">Comedor</label>
+        <select id="select-comedor"></select>
+      </div>
+    </section>
+
+    <section class="tarjeta" aria-labelledby="titulo-disponibles">
+      <h2 id="titulo-disponibles">Excedentes disponibles</h2>
+      <ul id="lista-publicaciones" class="lista-publicaciones"></ul>
+      <p id="mensaje-error" class="mensaje-error" role="alert"></p>
+    </section>
+  </main>
+
+</body>
+</html>
