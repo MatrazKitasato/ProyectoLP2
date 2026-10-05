@@ -1,3 +1,7 @@
+if (sessionStorage.getItem('ayni_rol') !== 'donante') {
+  window.location.href = 'index.html';
+}
+
 let carrito = []; // [{ producto, cantidad, unidad }]
 
 const selectNegocio = document.getElementById('select-negocio');
@@ -12,7 +16,7 @@ const mensajeError = document.getElementById('mensaje-error');
 function estadoATexto(estado) {
   if (estado === 'disponible') return 'Disponible';
   if (estado === 'reclamada') return 'Reclamada';
-  return 'Entregada';
+  return 'Vencida';
 }
 
 async function cargarNegocios() {
@@ -42,10 +46,18 @@ async function cargarPublicaciones() {
 
   sessionStorage.setItem('ayni_negocio_id', negocioId);
 
-  const res = await fetch(`/api/publicaciones?negocio_id=${negocioId}`);
+  const res = await fetch(`/api/publicaciones/historial?negocio_id=${negocioId}`);
   const publicaciones = await res.json();
 
   listaPublicaciones.textContent = '';
+
+  if (publicaciones.length === 0) {
+    const vacio = document.createElement('li');
+    vacio.className = 'lista-publicaciones__vacio';
+    vacio.textContent = 'Aún no publicaste ningún excedente.';
+    listaPublicaciones.appendChild(vacio);
+    return;
+  }
 
   publicaciones.forEach((pub) => {
     const li = document.createElement('li');
@@ -88,6 +100,15 @@ async function cargarPublicaciones() {
 
 function renderCarrito() {
   listaCarrito.textContent = '';
+
+  if (carrito.length === 0) {
+    const vacio = document.createElement('li');
+    vacio.className = 'lista-carrito__vacio';
+    vacio.textContent = 'Todavía no agregaste productos.';
+    listaCarrito.appendChild(vacio);
+    return;
+  }
+
   carrito.forEach((item, indice) => {
     const li = document.createElement('li');
     li.textContent = `${item.producto}: ${item.cantidad} ${item.unidad} `;

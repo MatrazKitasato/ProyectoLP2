@@ -1,20 +1,32 @@
 const supabase = require('../config/supabaseClient');
 
-// Publica un excedente con varios productos, de forma atómica usando la función RPC 'publicar_excedente' definida en la base de datos.
+// Publica un excedente con varios productos, de forma atómica,
+// llamando a la función SQL "publicar_excedente".
 async function publicar(negocioId, horaLimite, items) {
   const { data, error } = await supabase.rpc('publicar_excedente', {
     p_negocio_id: negocioId,
     p_hora_limite: horaLimite,
-    p_items: items,
+    p_items: items, // [{ producto, cantidad, unidad }, ...]
   });
 
   if (error) throw new Error(error.message);
   return data; // id de la publicación creada
 }
 
-// Lista publicaciones con su negocio, su detalle de productos y los reclamos asociados. Se puede filtrar por negocioId.
-async function listar({ negocioId } = {}) {
-  let query = supabase
+// RN05: una publicación "disponible" cuya hora límite ya pasó se 
+// considera vencida aunque la base todavía no la haya actualizado (eso solo ocurre cuando alguien intenta reclamarla). Esta función
+// calcula el estado real para mostrarlo, sin modificar la base.
+function calcularEstado(fila) {
+  if (fila.estado === 'disponible' && new Date(fila.hora_limite) < new Date()) {
+    return 'vencida';
+  }
+  return fila.estado;
+}
+
+// Historial del donante: todas sus publicaciones, con el estado ya calculado 
+// (disponible, reclamada o vencida).
+async function listarPorNegocio(negocioId) {
+  const { data, error } = await supabase
     .from('publicaciones')
     .select(
       `id, hora_limite, estado, created_at,
@@ -22,15 +34,30 @@ async function listar({ negocioId } = {}) {
        publicacion_detalle ( id, producto, cantidad, unidad ),
        reclamos ( comedor_id, fecha, comedores ( nombre ) )`
     )
+    .eq('negocio_id', negocioId)
     .order('created_at', { ascending: false });
 
-  if (negocioId) {
-    query = query.eq('negocio_id', negocioId);
-  }
+  if (error) throw new Error(error.message);
+  return data.map((fila) => ({ ...fila, estado: calcularEstado(fila) }));
+}
 
-  const { data, error } = await query;
+// RF09/RN08: el receptor solo debe ver publicaciones realmente
+// disponibles: estado "disponible" Y hora límite todavía no pasada.
+// El filtro de tiempo va en la propia consulta, no se calcula después.
+async function listarDisponibles() {
+  const { data, error } = await supabase
+    .from('publicaciones')
+    .select(
+      `id, hora_limite, estado, created_at,
+       negocios ( id, nombre, zona ),
+       publicacion_detalle ( id, producto, cantidad, unidad )`
+    )
+    .eq('estado', 'disponible')
+    .gt('hora_limite', new Date().toISOString())
+    .order('hora_limite', { ascending: true });
+
   if (error) throw new Error(error.message);
   return data;
 }
 
-module.exports = { publicar, listar };
+module.exports = { publicar, listarPorNegocio, listarDisponibles };

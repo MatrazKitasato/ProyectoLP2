@@ -1,34 +1,53 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-PE">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ayni - Rescate de alimentos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <script defer src="index.js"></script>
 </head>
 <body>
   <main class="inicio">
+    <div class="inicio__brillo" aria-hidden="true"></div>
+
     <div class="inicio__marca">
+      <span class="inicio__chip">Rescate de alimentos</span>
       <h1>Ayni</h1>
-      <p>Conectamos negocios con excedentes de comida con comedores y ollas comunes que los necesitan.</p>
+      <p>Conectamos negocios con excedentes de comida con comedores y ollas comunes que los necesitan, antes de que se pierdan.</p>
     </div>
 
     <div class="roles">
-      <a class="rol" href="donante.html">
+      <button type="button" class="rol rol--donante" data-rol="donante">
         <span class="rol__icono" aria-hidden="true"></span>
         <h2>Soy negocio donante</h2>
         <p>Publico lo que me va a sobrar hoy.</p>
-      </a>
+        <span class="rol__flecha" aria-hidden="true">→</span>
+      </button>
 
-      <a class="rol" href="receptor.html">
+      <button type="button" class="rol rol--receptor" data-rol="receptor">
         <span class="rol__icono" aria-hidden="true"></span>
         <h2>Soy comedor receptor</h2>
         <p>Reviso y reclamo excedentes disponibles.</p>
-      </a>
+        <span class="rol__flecha" aria-hidden="true">→</span>
+      </button>
     </div>
   </main>
+  <footer class="pie">
+    <div class="pie__contenido">
+      <p class="pie__marca">Ayni</p>
+      <p class="pie__copyright">© 2026 Ayni. Todos los derechos reservados.</p>
+      <a href="#" class="pie__contacto">Contáctanos</a>
+      <div class="pie__redes">
+        <a href="#" aria-label="Facebook"></a>
+        <a href="#" aria-label="Instagram"></a>
+        <a href="#" aria-label="TikTok"></a>
+        <a href="#" aria-label="WhatsApp"></a>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

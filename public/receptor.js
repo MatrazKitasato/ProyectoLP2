@@ -1,3 +1,7 @@
+if (sessionStorage.getItem('ayni_rol') !== 'receptor') {
+  window.location.href = 'index.html';
+}
+
 const selectComedor = document.getElementById('select-comedor');
 const listaPublicaciones = document.getElementById('lista-publicaciones');
 const mensajeError = document.getElementById('mensaje-error');
@@ -21,15 +25,15 @@ async function cargarComedores() {
 }
 
 async function cargarDisponibles() {
-  const res = await fetch('/api/publicaciones');
-  const publicaciones = await res.json();
-  const disponibles = publicaciones.filter((p) => p.estado === 'disponible');
+  const res = await fetch('/api/publicaciones/disponibles');
+  const disponibles = await res.json();
 
   listaPublicaciones.textContent = '';
 
   if (disponibles.length === 0) {
     const vacio = document.createElement('li');
-    vacio.textContent = 'No hay excedentes disponibles por ahora.';
+    vacio.className = 'lista-publicaciones__vacio';
+    vacio.textContent = 'No hay excedentes disponibles por ahora. Vuelve a revisar más tarde 🙂';
     listaPublicaciones.appendChild(vacio);
     return;
   }
@@ -43,7 +47,7 @@ async function cargarDisponibles() {
 
     const negocio = document.createElement('span');
     negocio.className = 'publicacion__negocio';
-    negocio.textContent = pub.negocios?.nombre ?? 'Negocio';
+    negocio.textContent = `🏪 ${pub.negocios?.nombre ?? 'Negocio'}`;
 
     const fecha = document.createElement('span');
     fecha.textContent = `Hasta ${new Date(pub.hora_limite).toLocaleString()}`;

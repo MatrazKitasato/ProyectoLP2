@@ -21,7 +21,7 @@ create table if not exists publicaciones (
   negocio_id  bigint not null references negocios(id),
   hora_limite timestamptz not null,
   estado      text not null default 'disponible'
-              check (estado in ('disponible','reclamada','entregada')),
+              check (estado in ('disponible','reclamada','vencida')),
   created_at  timestamptz not null default now()
 );
 
@@ -42,6 +42,9 @@ create table if not exists reclamos (
   fecha           timestamptz not null default now()
 );
 
+truncate table publicacion_detalle, reclamos, publicaciones, negocios, comedores
+  restart identity cascade;
+
 -- 6) Datos de ejemplo
 insert into negocios (nombre, zona) values
   ('Panadería San José', 'Villa El Salvador'),
@@ -53,8 +56,7 @@ insert into comedores (nombre, zona, responsable) values
   ('Olla Manos Unidas', 'Villa El Salvador', 'Rosa Huamán')
 on conflict do nothing;
 
-
--- 7) Función RPC: publica un excedente con varios productos,
+-- 7) Función RPC: publica un excedente con varios productos de forma atómica para que no queden publicaciones sin detalle ni detalle sin publicación. Devuelve el id de la publicación creada.
 
 create or replace function publicar_excedente(
   p_negocio_id bigint,
@@ -77,6 +79,10 @@ begin
 
   if p_items is null or jsonb_array_length(p_items) = 0 then
     raise exception 'La publicación debe tener al menos un producto';
+  end if;
+
+  if p_hora_limite is null or p_hora_limite <= now() then
+    raise exception 'La hora límite debe ser posterior al momento de registro';
   end if;
 
   insert into publicaciones (negocio_id, hora_limite)
@@ -104,8 +110,7 @@ begin
 end;
 $$;
 
--- 8) Función RPC: reclama una publicación. Solo puede reclamarse
-
+-- 8) Función RPC: reclama una publicación. Solo puede reclamarse una vez
 create or replace function reclamar_publicacion(
   p_publicacion_id bigint,
   p_comedor_id bigint
@@ -115,8 +120,9 @@ language plpgsql
 as $$
 declare
   v_estado text;
+  v_hora_limite timestamptz;
 begin
-  select estado into v_estado
+  select estado, hora_limite into v_estado, v_hora_limite
     from publicaciones where id = p_publicacion_id
     for update;
 
@@ -124,8 +130,19 @@ begin
     raise exception 'La publicación no existe';
   end if;
 
-  if v_estado <> 'disponible' then
+  -- Si ya pasó la hora límite, se considera vencida aunque aún diga "disponible" según la regla de negocio 5 se actualiza y se corta el reclamo aquí.
+
+  if v_estado = 'disponible' and v_hora_limite < now() then
+    update publicaciones set estado = 'vencida' where id = p_publicacion_id;
+    raise exception 'Esta publicación ya venció';
+  end if;
+
+  if v_estado = 'reclamada' then
     raise exception 'Esta publicación ya fue reclamada';
+  end if;
+
+  if v_estado = 'vencida' then
+    raise exception 'Esta publicación ya venció';
   end if;
 
   update publicaciones set estado = 'reclamada' where id = p_publicacion_id;
@@ -135,9 +152,10 @@ begin
 end;
 $$;
 
+-- ============================================================
 -- 9) RLS activado (solo el servidor, con la clave service_role,
 --    podrá leer/escribir).
-
+-- ============================================================
 alter table negocios enable row level security;
 alter table comedores enable row level security;
 alter table publicaciones enable row level security;

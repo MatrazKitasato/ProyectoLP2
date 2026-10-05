@@ -27,16 +27,30 @@ async function publicar(req, res) {
   }
 }
 
-async function listar(req, res) {
+// RF07: historial del donante (requiere negocio_id).
+async function listarPorNegocio(req, res) {
+  const negocioId = Number(req.query.negocio_id);
+
+  if (!negocioId) {
+    return res.status(400).json({ error: 'Falta el negocio' });
+  }
+
   try {
-    const negocioId = req.query.negocio_id
-      ? Number(req.query.negocio_id)
-      : undefined;
-    const publicaciones = await publicacionModel.listar({ negocioId });
+    const publicaciones = await publicacionModel.listarPorNegocio(negocioId);
     res.status(200).json(publicaciones);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 }
 
-module.exports = { publicar, listar };
+// RF09: lo que ve el receptor, ya filtrado a solo disponibles.
+async function listarDisponibles(req, res) {
+  try {
+    const publicaciones = await publicacionModel.listarDisponibles();
+    res.status(200).json(publicaciones);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+module.exports = { publicar, listarPorNegocio, listarDisponibles };
