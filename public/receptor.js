@@ -69,14 +69,14 @@ async function cargarDisponibles() {
     btnReclamar.type = 'button';
     btnReclamar.className = 'boton boton--principal';
     btnReclamar.textContent = 'Reclamar';
-    btnReclamar.addEventListener('click', () => reclamar(pub.id));
+    btnReclamar.addEventListener('click', () => reclamar(pub.id, btnReclamar));
     li.appendChild(btnReclamar);
 
     listaPublicaciones.appendChild(li);
   });
 }
 
-async function reclamar(publicacionId) {
+async function reclamar(publicacionId, boton) {
   mensajeError.textContent = '';
   const comedorId = Number(selectComedor.value);
 
@@ -85,20 +85,35 @@ async function reclamar(publicacionId) {
     return;
   }
 
-  const respuesta = await fetch(`/api/publicaciones/${publicacionId}/reclamar`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ comedor_id: comedorId }),
-  });
+  const confirmado = await confirmarAccion('¿Reclamar este excedente para tu comedor?');
+  if (!confirmado) return;
 
-  const datos = await respuesta.json();
+  boton.disabled = true;
+  boton.textContent = 'Reclamando...';
 
-  if (!respuesta.ok) {
-    mensajeError.textContent = datos.error;
-    return;
+  try {
+    const respuesta = await fetch(`/api/publicaciones/${publicacionId}/reclamar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ comedor_id: comedorId }),
+    });
+
+    const datos = await respuesta.json();
+
+    if (!respuesta.ok) {
+      mensajeError.textContent = datos.error;
+      return;
+    }
+
+    await cargarDisponibles();
+  } finally {
+    // Si la publicación ya no está en la lista (se reclamó con éxito),
+    // el botón desapareció junto con ella; si sigue, se reactiva.
+    if (document.body.contains(boton)) {
+      boton.disabled = false;
+      boton.textContent = 'Reclamar';
+    }
   }
-
-  await cargarDisponibles();
 }
 
 selectComedor.addEventListener('change', () => {

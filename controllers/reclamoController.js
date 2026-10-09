@@ -12,7 +12,9 @@ async function reclamar(req, res) {
     await reclamoModel.reclamar(publicacionId, comedor_id);
     res.status(200).json({ mensaje: 'Publicación reclamada' });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    // 409 Conflict: la publicación ya fue tomada por otro comedor o
+    // venció entre que se cargó la lista y se intentó reclamar (RN06).
+    res.status(409).json({ error: error.message });
   }
 }
 

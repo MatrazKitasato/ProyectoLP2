@@ -12,6 +12,16 @@ const selectUnidad = document.getElementById('select-unidad');
 const listaCarrito = document.getElementById('lista-carrito');
 const listaPublicaciones = document.getElementById('lista-publicaciones');
 const mensajeError = document.getElementById('mensaje-error');
+const errorNegocio = document.getElementById('error-negocio');
+const errorHora = document.getElementById('error-hora');
+const errorCarrito = document.getElementById('error-carrito');
+
+function limpiarErroresDeCampo() {
+  errorNegocio.textContent = '';
+  errorHora.textContent = '';
+  errorCarrito.textContent = '';
+  mensajeError.textContent = '';
+}
 
 function estadoATexto(estado) {
   if (estado === 'disponible') return 'Disponible';
@@ -86,11 +96,10 @@ async function cargarPublicaciones() {
     });
     li.appendChild(detalle);
 
-    if (pub.reclamos && pub.reclamos.length > 0) {
-      const reclamo = pub.reclamos[0];
+    if (pub.estado === 'reclamada' && pub.comedores) {
       const nota = document.createElement('p');
       nota.className = 'publicacion__detalle';
-      nota.textContent = `Reclamado por ${reclamo.comedores?.nombre ?? 'un comedor'}`;
+      nota.textContent = `Reclamado por ${pub.comedores.nombre} el ${new Date(pub.fecha_reclamo).toLocaleString()}`;
       li.appendChild(nota);
     }
 
@@ -141,47 +150,71 @@ document.getElementById('btn-agregar').addEventListener('click', () => {
 
 selectNegocio.addEventListener('change', cargarPublicaciones);
 
+const btnPublicar = formPublicacion.querySelector('button[type="submit"]');
+
 formPublicacion.addEventListener('submit', async (evento) => {
   evento.preventDefault();
-  mensajeError.textContent = '';
+  limpiarErroresDeCampo();
 
   const negocioId = Number(selectNegocio.value);
   const horaLimite = document.getElementById('hora-limite').value;
+  let huboError = false;
 
+  // Mensajes de validación junto a cada campo, antes de enviar el
+  // formulario (RF04, RF05, RF11). La validación definitiva la repite
+  // el servidor en publicar_excedente, según RNF05.
   if (!negocioId) {
-    mensajeError.textContent = 'Elige tu negocio primero';
-    return;
+    errorNegocio.textContent = 'Elige tu negocio primero';
+    huboError = true;
   }
   if (!horaLimite) {
-    mensajeError.textContent = 'Indica hasta cuándo está disponible';
-    return;
+    errorHora.textContent = 'Indica hasta cuándo está disponible';
+    huboError = true;
+  } else if (new Date(horaLimite) <= new Date()) {
+    errorHora.textContent = 'La hora límite debe ser posterior a este momento';
+    huboError = true;
   }
   if (carrito.length === 0) {
-    mensajeError.textContent = 'Agrega al menos un producto';
-    return;
+    errorCarrito.textContent = 'Agrega al menos un producto';
+    huboError = true;
   }
 
-  const respuesta = await fetch('/api/publicaciones', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      negocio_id: negocioId,
-      hora_limite: new Date(horaLimite).toISOString(),
-      items: carrito,
-    }),
-  });
+  if (huboError) return;
 
-  const datos = await respuesta.json();
+  const confirmado = await confirmarAccion(
+    `¿Publicar este excedente con ${carrito.length} producto(s)?`
+  );
+  if (!confirmado) return;
 
-  if (!respuesta.ok) {
-    mensajeError.textContent = datos.error;
-    return;
+  btnPublicar.disabled = true;
+  btnPublicar.textContent = 'Publicando...';
+
+  try {
+    const respuesta = await fetch('/api/publicaciones', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        negocio_id: negocioId,
+        hora_limite: new Date(horaLimite).toISOString(),
+        items: carrito,
+      }),
+    });
+
+    const datos = await respuesta.json();
+
+    if (!respuesta.ok) {
+      mensajeError.textContent = datos.error;
+      return;
+    }
+
+    formPublicacion.reset();
+    carrito = [];
+    renderCarrito();
+    await cargarPublicaciones();
+  } finally {
+    btnPublicar.disabled = false;
+    btnPublicar.textContent = 'Publicar excedente';
   }
-
-  formPublicacion.reset();
-  carrito = [];
-  renderCarrito();
-  await cargarPublicaciones();
 });
 
 cargarNegocios();

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es-PE">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,43 +11,101 @@
   <script defer src="index.js"></script>
 </head>
 <body>
-  <main class="inicio">
-    <div class="inicio__brillo" aria-hidden="true"></div>
-
-    <div class="inicio__marca">
-      <span class="inicio__chip">Rescate de alimentos</span>
-      <h1>Ayni</h1>
-      <p>Conectamos negocios con excedentes de comida con comedores y ollas comunes que los necesitan, antes de que se pierdan.</p>
+  <header class="navbar">
+    <div class="navbar__contenido">
+      <a href="#inicio" class="navbar__marca">Ayni</a>
+      <nav class="navbar__enlaces" aria-label="Navegación principal">
+        <a href="#inicio">Inicio</a>
+        <a href="#nosotros">Quiénes somos</a>
+        <a href="#contacto">Contáctanos</a>
+      </nav>
+      <a href="#roles" class="navbar__cta">Comenzar</a>
     </div>
+  </header>
 
-    <div class="roles">
-      <button type="button" class="rol rol--donante" data-rol="donante">
-        <span class="rol__icono" aria-hidden="true"></span>
-        <h2>Soy negocio donante</h2>
-        <p>Publico lo que me va a sobrar hoy.</p>
-        <span class="rol__flecha" aria-hidden="true">→</span>
-      </button>
+  <main>
+    <section id="inicio" class="inicio">
+      <div class="inicio__brillo" aria-hidden="true"></div>
 
-      <button type="button" class="rol rol--receptor" data-rol="receptor">
-        <span class="rol__icono" aria-hidden="true"></span>
-        <h2>Soy comedor receptor</h2>
-        <p>Reviso y reclamo excedentes disponibles.</p>
-        <span class="rol__flecha" aria-hidden="true">→</span>
-      </button>
-    </div>
+      <div class="inicio__marca">
+        <span class="inicio__chip">Rescate de alimentos</span>
+        <h1>Ayni</h1>
+        <p>Conectamos negocios con excedentes de comida con comedores y ollas comunes que los necesitan, antes de que se pierdan.</p>
+      </div>
+
+      <div id="roles" class="roles">
+        <button type="button" class="rol rol--donante" data-rol="donante">
+          <span class="rol__icono" aria-hidden="true"></span>
+          <h2>Soy negocio donante</h2>
+          <p>Publico lo que me va a sobrar hoy.</p>
+          <span class="rol__flecha" aria-hidden="true">→</span>
+        </button>
+
+        <button type="button" class="rol rol--receptor" data-rol="receptor">
+          <span class="rol__icono" aria-hidden="true"></span>
+          <h2>Soy comedor receptor</h2>
+          <p>Reviso y reclamo excedentes disponibles.</p>
+          <span class="rol__flecha" aria-hidden="true">→</span>
+        </button>
+      </div>
+    </section>
+
+    <section id="nosotros" class="nosotros">
+      <div class="nosotros__contenido">
+        <h2><span class="titulo__icono"></span> Quiénes somos</h2>
+        <p>
+          Ayni es una startup que nace para reducir el desperdicio de alimentos
+          en Perú, conectando a negocios que todos los días tienen
+          un excedente —pan, comida preparada, abarrotes— con comedores y ollas
+          comunes que alimentan a familias del distrito.
+        </p>
+        <p>
+          El nombre viene del quechua <em>ayni</em>, "reciprocidad": lo que a
+          un negocio le sobra hoy, hoy mismo alimenta a alguien más, sin
+          intermediarios ni costo.
+        </p>
+        <div class="nosotros__stats">
+          <div class="nosotros__stat">
+            <strong>6</strong>
+            <span>negocios aliados</span>
+          </div>
+          <div class="nosotros__stat">
+            <strong>6</strong>
+            <span>comedores y ollas comunes</span>
+          </div>
+          <div class="nosotros__stat">
+            <strong>100%</strong>
+            <span>gratuito para ambas partes</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" class="contacto">
+      <div class="contacto__contenido">
+        <h2><span class="titulo__icono"></span> Contáctanos</h2>
+        <p>¿Tienes un negocio o un comedor y quieres sumarte a Ayni? Escríbenos.</p>
+        <ul class="contacto__datos">
+          <li>contacto@ayni.pe</li>
+          <li>San Borja, Lima, Perú</li>
+        </ul>
+      </div>
+    </section>
   </main>
+
   <footer class="pie">
     <div class="pie__contenido">
       <p class="pie__marca">Ayni</p>
       <p class="pie__copyright">© 2026 Ayni. Todos los derechos reservados.</p>
-      <a href="#" class="pie__contacto">Contáctanos</a>
+      <a href="#contacto" class="pie__contacto">Contáctanos</a>
       <div class="pie__redes">
-        <a href="#" aria-label="Facebook">FB</a>
-        <a href="#" aria-label="Instagram">IG</a>
-        <a href="#" aria-label="TikTok">TT</a>
-        <a href="#" aria-label="WhatsApp">W</a>
+        <a href="#" aria-label="Facebook">Fb</a>
+        <a href="#" aria-label="Instagram">Ig</a>
+        <a href="#" aria-label="TikTok">Tk</a>
+        <a href="#" aria-label="WhatsApp">Wp</a>
       </div>
     </div>
   </footer>
+
 </body>
 </html>

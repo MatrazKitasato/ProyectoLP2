@@ -7,10 +7,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css"/>
+  
+  <script defersrc="modal.js"></script>
   <script defer src="receptor.js"></script>
 </head>
-<body class="tema--receptor">
+<body>
   <header class="encabezado">
     <div class="encabezado__marca">
       <span class="encabezado__icono" aria-hidden="true"></span>
@@ -18,7 +20,7 @@
         <h1>Ayni</h1>
         <p class="encabezado__subtitulo">Panel del comedor receptor</p>
       </div>
-      <a class="encabezado__volver" href="index.html">↺ Cambiar de rol</a>
+      <a class="encabezado__volver" href="index.html">Cambiar de rol</a>
     </div>
   </header>
 
@@ -27,7 +29,8 @@
       <h2 id="titulo-comedor"><span class="titulo__icono"></span> ¿Cuál es tu comedor u olla común?</h2>
       <div class="campo">
         <label for="select-comedor">Comedor</label>
-        <select id="select-comedor"></select>
+        <select id="select-comedor" aria-describedby="error-comedor"></select>
+        <span id="error-comedor" class="campo__error" role="alert"></span>
       </div>
     </section>
 
@@ -37,18 +40,20 @@
       <p id="mensaje-error" class="mensaje-error" role="alert"></p>
     </section>
   </main>
+
   <footer class="pie">
     <div class="pie__contenido">
       <p class="pie__marca">Ayni</p>
       <p class="pie__copyright">© 2026 Ayni. Todos los derechos reservados.</p>
       <a href="#" class="pie__contacto">Contáctanos</a>
       <div class="pie__redes">
-        <a href="#" aria-label="Facebook">FB</a>
-        <a href="#" aria-label="Instagram">IG</a>
-        <a href="#" aria-label="TikTok">TT</a>
-        <a href="#" aria-label="WhatsApp">W</a>
+        <a href="#" aria-label="Facebook">Fb</a>
+        <a href="#" aria-label="Instagram">Ig</a>
+        <a href="#" aria-label="TikTok">Tk</a>
+        <a href="#" aria-label="WhatsApp">Wp</a>
       </div>
     </div>
   </footer>
+
 </body>
 </html>

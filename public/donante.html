@@ -8,9 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <script defer src="modal.js"></script>
   <script defer src="donante.js"></script>
 </head>
-<body class="tema--donante">
+<body>
   <header class="encabezado">
     <div class="encabezado__marca">
       <span class="encabezado__icono" aria-hidden="true"></span>
@@ -18,7 +19,7 @@
         <h1>Ayni</h1>
         <p class="encabezado__subtitulo">Panel del negocio donante</p>
       </div>
-      <a class="encabezado__volver" href="index.html">↺ Cambiar de rol</a>
+      <a class="encabezado__volver" href="index.html">Cambiar de rol</a>
     </div>
   </header>
 
@@ -27,7 +28,8 @@
       <h2 id="titulo-negocio"><span class="titulo__icono"></span> ¿Cuál es tu negocio?</h2>
       <div class="campo">
         <label for="select-negocio">Negocio</label>
-        <select id="select-negocio"></select>
+        <select id="select-negocio" aria-describedby="error-negocio"></select>
+        <span id="error-negocio" class="campo__error" role="alert"></span>
       </div>
     </section>
 
@@ -36,7 +38,8 @@
       <form id="form-publicacion" class="formulario">
         <div class="campo">
           <label for="hora-limite">Disponible hasta</label>
-          <input type="datetime-local" id="hora-limite" required />
+          <input type="datetime-local" id="hora-limite"  aria-describedby="error-hora" />
+          <span id="error-hora" class="campo__error" role="alert"></span>
         </div>
 
         <div class="fila-producto">
@@ -59,7 +62,7 @@
             </select>
           </div>
 
-          <button type="button" id="btn-agregar" class="boton boton--secundario">+ Agregar</button>
+          <button type="button" id="btn-agregar" class="boton boton--secundario">Agregar</button>
         </div>
 
         <div class="carrito">
@@ -67,6 +70,7 @@
           <ul id="lista-carrito" class="lista-carrito">
             <li class="lista-carrito__vacio" data-vacio>Todavía no agregaste productos.</li>
           </ul>
+          <span id="error-carrito" class="campo__error" role="alert"></span>
         </div>
 
         <button type="submit" class="boton boton--principal">Publicar excedente</button>
@@ -80,18 +84,20 @@
       <ul id="lista-publicaciones" class="lista-publicaciones"></ul>
     </section>
   </main>
+
   <footer class="pie">
     <div class="pie__contenido">
       <p class="pie__marca">Ayni</p>
       <p class="pie__copyright">© 2026 Ayni. Todos los derechos reservados.</p>
       <a href="#" class="pie__contacto">Contáctanos</a>
       <div class="pie__redes">
-        <a href="#" aria-label="Facebook">FB</a>
-        <a href="#" aria-label="Instagram">IG</a>
-        <a href="#" aria-label="TikTok">TT</a>
-        <a href="#" aria-label="WhatsApp">W</a>
+        <a href="#" aria-label="Facebook">Fb</a>
+        <a href="#" aria-label="Instagram">Ig</a>
+        <a href="#" aria-label="TikTok">Tk</a>
+        <a href="#" aria-label="WhatsApp">Wp</a>
       </div>
     </div>
   </footer>
+
 </body>
 </html>
