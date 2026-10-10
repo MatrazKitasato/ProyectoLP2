@@ -5,6 +5,7 @@ if (sessionStorage.getItem('ayni_rol') !== 'receptor') {
 const selectComedor = document.getElementById('select-comedor');
 const listaPublicaciones = document.getElementById('lista-publicaciones');
 const mensajeError = document.getElementById('mensaje-error');
+const errorComedor = document.getElementById('error-comedor');
 
 async function cargarComedores() {
   const res = await fetch('/api/comedores');
@@ -47,7 +48,7 @@ async function cargarDisponibles() {
 
     const negocio = document.createElement('span');
     negocio.className = 'publicacion__negocio';
-    negocio.textContent = `🏪 ${pub.negocios?.nombre ?? 'Negocio'}`;
+    negocio.textContent = pub.negocios?.nombre ?? 'Negocio';
 
     const fecha = document.createElement('span');
     fecha.textContent = `Hasta ${new Date(pub.hora_limite).toLocaleString()}`;
@@ -78,10 +79,12 @@ async function cargarDisponibles() {
 
 async function reclamar(publicacionId, boton) {
   mensajeError.textContent = '';
+  errorComedor.textContent = '';
   const comedorId = Number(selectComedor.value);
 
+  // Mensaje de validación junto al campo (RF10, RF11), antes de enviar.
   if (!comedorId) {
-    mensajeError.textContent = 'Elige tu comedor primero';
+    errorComedor.textContent = 'Elige tu comedor primero';
     return;
   }
 
@@ -118,6 +121,7 @@ async function reclamar(publicacionId, boton) {
 
 selectComedor.addEventListener('change', () => {
   sessionStorage.setItem('ayni_comedor_id', selectComedor.value);
+  errorComedor.textContent = '';
 });
 
 cargarComedores();

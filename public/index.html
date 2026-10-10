@@ -4,9 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ayni - Rescate de alimentos</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <script defer src="index.js"></script>
 </head>
@@ -17,6 +14,8 @@
       <nav class="navbar__enlaces" aria-label="Navegación principal">
         <a href="#inicio">Inicio</a>
         <a href="#nosotros">Quiénes somos</a>
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#aliados">Aliados</a>
         <a href="#contacto">Contáctanos</a>
       </nav>
       <a href="#roles" class="navbar__cta">Comenzar</a>
@@ -27,22 +26,45 @@
     <section id="inicio" class="inicio">
       <div class="inicio__brillo" aria-hidden="true"></div>
 
-      <div class="inicio__marca">
-        <span class="inicio__chip">Rescate de alimentos</span>
-        <h1>Ayni</h1>
-        <p>Conectamos negocios con excedentes de comida con comedores y ollas comunes que los necesitan, antes de que se pierdan.</p>
+      <div class="inicio__grid">
+        <div class="inicio__texto">
+          <span class="inicio__chip">Rescate de alimentos</span>
+          <h1>Lo que te sobra hoy, alimenta a alguien más hoy mismo</h1>
+          <p>
+            Ayni conecta negocios con excedentes de comida —pan, comida
+            preparada, abarrotes— con comedores y ollas comunes de Villa El
+            Salvador que los necesitan, antes de que se pierdan.
+          </p>
+          <div class="inicio__acciones">
+            <a href="#roles" class="boton boton--principal">Comenzar ahora</a>
+            <a href="#como-funciona" class="boton boton--secundario">Ver cómo funciona</a>
+          </div>
+        </div>
+
+        <div class="inicio__panel">
+          <div class="inicio__panel-stat">
+            <strong>6</strong>
+            <span>negocios aliados</span>
+          </div>
+          <div class="inicio__panel-stat">
+            <strong>6</strong>
+            <span>comedores y ollas comunes</span>
+          </div>
+          <div class="inicio__panel-stat">
+            <strong>0%</strong>
+            <span>costo para ambas partes</span>
+          </div>
+        </div>
       </div>
 
       <div id="roles" class="roles">
         <button type="button" class="rol rol--donante" data-rol="donante">
-          <span class="rol__icono" aria-hidden="true"></span>
           <h2>Soy negocio donante</h2>
           <p>Publico lo que me va a sobrar hoy.</p>
           <span class="rol__flecha" aria-hidden="true">→</span>
         </button>
 
         <button type="button" class="rol rol--receptor" data-rol="receptor">
-          <span class="rol__icono" aria-hidden="true"></span>
           <h2>Soy comedor receptor</h2>
           <p>Reviso y reclamo excedentes disponibles.</p>
           <span class="rol__flecha" aria-hidden="true">→</span>
@@ -51,43 +73,82 @@
     </section>
 
     <section id="nosotros" class="nosotros">
-      <div class="nosotros__contenido">
-        <h2><span class="titulo__icono"></span> Quiénes somos</h2>
+      <div class="seccion__contenido">
+        <h2>Quiénes somos</h2>
         <p>
           Ayni es una startup que nace para reducir el desperdicio de alimentos
-          en Perú, conectando a negocios que todos los días tienen
-          un excedente —pan, comida preparada, abarrotes— con comedores y ollas
-          comunes que alimentan a familias del distrito.
+          en Villa El Salvador, conectando a negocios que todos los días tienen
+          un excedente con comedores y ollas comunes que alimentan a familias
+          del distrito.
         </p>
         <p>
           El nombre viene del quechua <em>ayni</em>, "reciprocidad": lo que a
           un negocio le sobra hoy, hoy mismo alimenta a alguien más, sin
           intermediarios ni costo.
         </p>
-        <div class="nosotros__stats">
-          <div class="nosotros__stat">
-            <strong>6</strong>
-            <span>negocios aliados</span>
+      </div>
+    </section>
+
+    <section id="como-funciona" class="como-funciona">
+      <div class="seccion__contenido">
+        <h2>Cómo funciona</h2>
+        <div class="pasos">
+          <div class="paso">
+            <span class="paso__numero">1</span>
+            <h3>El negocio publica</h3>
+            <p>Un negocio registra qué le va a sobrar hoy y hasta qué hora está disponible para recoger.</p>
           </div>
-          <div class="nosotros__stat">
-            <strong>6</strong>
-            <span>comedores y ollas comunes</span>
+          <div class="paso">
+            <span class="paso__numero">2</span>
+            <h3>El comedor reclama</h3>
+            <p>Un comedor u olla común revisa lo disponible y reclama lo que necesita, antes que otro lo haga.</p>
           </div>
-          <div class="nosotros__stat">
-            <strong>100%</strong>
-            <span>gratuito para ambas partes</span>
+          <div class="paso">
+            <span class="paso__numero">3</span>
+            <h3>Se recoge el excedente</h3>
+            <p>El comedor pasa a recoger lo reclamado dentro del horario indicado por el negocio.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="aliados" class="aliados">
+      <div class="seccion__contenido">
+        <h2>Negocios y comedores aliados</h2>
+        <div class="aliados__columnas">
+          <div class="aliados__columna">
+            <h3>Negocios donantes</h3>
+            <ul>
+              <li>Panadería San José</li>
+              <li>Restaurante El Fogón</li>
+              <li>Restaurante Sabor Criollo</li>
+              <li>Pollería Doña Rosa</li>
+              <li>Bodega La Esquina</li>
+              <li>Café Cultural VES</li>
+            </ul>
+          </div>
+          <div class="aliados__columna">
+            <h3>Comedores y ollas comunes</h3>
+            <ul>
+              <li>Olla Virgen de Chapi</li>
+              <li>Olla Manos Unidas</li>
+              <li>Comedor Popular Las Flores</li>
+              <li>Olla Común San Genaro</li>
+              <li>Comedor Popular Virgen del Carmen</li>
+              <li>Olla Nueva Esperanza</li>
+            </ul>
           </div>
         </div>
       </div>
     </section>
 
     <section id="contacto" class="contacto">
-      <div class="contacto__contenido">
-        <h2><span class="titulo__icono"></span> Contáctanos</h2>
+      <div class="seccion__contenido">
+        <h2>Contáctanos</h2>
         <p>¿Tienes un negocio o un comedor y quieres sumarte a Ayni? Escríbenos.</p>
         <ul class="contacto__datos">
           <li>contacto@ayni.pe</li>
-          <li>San Borja, Lima, Perú</li>
+          <li>Villa El Salvador, Lima, Perú</li>
         </ul>
       </div>
     </section>
@@ -99,13 +160,12 @@
       <p class="pie__copyright">© 2026 Ayni. Todos los derechos reservados.</p>
       <a href="#contacto" class="pie__contacto">Contáctanos</a>
       <div class="pie__redes">
-        <a href="#" aria-label="Facebook">Fb</a>
-        <a href="#" aria-label="Instagram">Ig</a>
-        <a href="#" aria-label="TikTok">Tk</a>
-        <a href="#" aria-label="WhatsApp">Wp</a>
+        <a href="#">Fb</a>
+        <a href="#">Ig</a>
+        <a href="#">Tt</a>
+        <a href="#">Wspp</a>
       </div>
     </div>
   </footer>
-
 </body>
 </html>
